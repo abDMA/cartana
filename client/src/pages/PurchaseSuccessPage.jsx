@@ -2,9 +2,8 @@ import { ArrowRight, CheckCircle, HandHeart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
+import axios from "../lib/axios";
 import Confetti from "react-confetti";
-const URL_API = "http://localhost:8000/api/payment/checkout-success"
 const PurchaseSuccessPage = () => {
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [error, setError] = useState(null);
@@ -12,7 +11,7 @@ const PurchaseSuccessPage = () => {
 	useEffect(() => {
 		const handleCheckoutSuccess = async (sessionId) => {
 			try {
-				await axios.post(URL_API, {
+				await axios.post('payment/checkout-success', {
 					sessionId,
 				});
 				localStorage.removeItem("cartItems");
