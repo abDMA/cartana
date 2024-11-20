@@ -1,0 +1,53 @@
+.swiper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    /* Center slide text vertically */
+    display: flex;
+    align-items: center;
+  }
+  
+  .swiper-slide img {
+  display: block;
+   width: 100%;
+  object-fit: contain;
+  @apply sm:rounded-[20px] rounded-md
+  }
+  .swiper-button-prev, .swiper-rtl .swiper-button-next{
+    left: var(--swiper-navigation-sides-offset, 25px);
+    right: auto;
+    @apply sm:px-8 sm:py-8  backdrop-blur drop-shadow-lg  rounded-full
+  }
+  .swiper-button-next, .swiper-rtl .swiper-button-prev {
+    right: var(--swiper-navigation-sides-offset, 25px);
+    left: auto;
+    @apply sm:px-8 sm:py-8 backdrop-blur drop-shadow-lg  rounded-full
+}
+  .swiper-button-prev:after, .swiper-button-next:after {
+    font-family: swiper-icons;
+    @apply sm:text-lg text-xs;
+    color: orange;
+    text-transform: none !important;
+    letter-spacing: 0;
+    font-variant: initial;
+    line-height: 1;
+}
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: var(--swiper-pagination-bottom, 8px);
+  top: var(--swiper-pagination-top, auto);
+  left: 10px;
+  @apply sm:w-[20%] w-[40%] ;
+}
+.swiper-pagination-bullet-active {
+  opacity: var(--swiper-pagination-bullet-opacity, 1);
+  background: white;
+  @apply  w-6 ;
+  @apply sm:h-2 h-[6px] ;
+  border-radius: 14px;
+ @apply transition duration-700 delay-75 ease-in-out
+}
