@@ -269,7 +269,7 @@ const NavBar = () => {
                   <p className="font-medium text-xs px-3 mb-5 ">
                     {user?.userName}@
                   </p>
-                  {role !== "regular" && (
+                  {role === "regular" ? '' : (
                     <a
                       href="/Admin_Dashboard"
                       className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md "
@@ -457,7 +457,7 @@ const NavBar = () => {
                 <div className=" px-2  shadow-md bg-white absolute top-12 left-0 rounded-md ">
                   <p className="font-bold text-sm px-3 pt-2">{user?.email}</p>
                   <p className="font-medium text-xs px-3 mb-2 ">{user?.userName}@</p>
-                  {role !== "regular" && (
+                  {role === "regular" ? "" : (
                     <a
                       href="/Admin_Dashboard"
                       className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md "
