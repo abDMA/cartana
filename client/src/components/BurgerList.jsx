@@ -21,8 +21,12 @@ import {
   
 import { ChevronLeft, Menu } from "lucide-react"
 import { sectionData } from "../utils/cart.data"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { sectionNames } from "../utils/recoil"
+import { useRecoilState } from "recoil"
 const BurgerList = () => {
+  const [sectionName, setSectionName] = useRecoilState(sectionNames);
+  const navigate = useNavigate()
   return (
     <Drawer>
     <DrawerTrigger>
@@ -57,6 +61,9 @@ const BurgerList = () => {
                  <DialogDescription className="flex items-center flex-wrap justify-center py-2">
                  {sectionData.map((data, i) => (
                     <div
+                    onClick={()=>{setSectionName(data.sectionName)
+                      navigate(`/all-sections`)
+                     }}
                       key={i}
                       className="flex w-full items-center justify-between h-10 gap-2 px-2 my-2 hover:bg-slate-200 cursor-pointer rounded-md"
                     >

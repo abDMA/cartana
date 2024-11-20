@@ -7,7 +7,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
-
 import { burgerList, defaulUserProfile, shopingBag, userIcon } from "../assets";
 import { sectionData } from "../utils/cart.data";
 import BurgerList from "../components/BurgerList";
@@ -16,14 +15,14 @@ import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 import { handlePayment } from "../utils/handlPyment.jsx";
 import { useRecoilState } from "recoil";
-import { count } from "../utils/recoil.js";
+import { count, sectionNames } from "../utils/recoil.js";
 
 const NavBar = () => {
   const [userPicture, setUserPicture] = useState(null);
   const [loading, setLoading] = useState(false)
   const [counter, setCounter] = useRecoilState(count);
+  const [sectionName, setSectionName] = useRecoilState(sectionNames);
   const navigate = useNavigate()
-
   const { isLoading, login, error, user, logout, signup, role,isAuthenticated } =
     useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
@@ -141,6 +140,9 @@ const NavBar = () => {
                 <div className="flex items-center justify-center flex-col py-2">
                   {sectionData.map((data, i) => (
                     <div
+                    onClick={()=>{setSectionName(data.sectionName)
+                      navigate(`/all-sections`)
+                     }}
                       key={i}
                       className="flex w-full items-center justify-between h-10 gap-2 px-2 my-2 hover:bg-slate-200 cursor-pointer rounded-md"
                     >
