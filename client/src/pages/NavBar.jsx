@@ -476,12 +476,12 @@ const NavBar = () => {
               )}
             </div>
           ) : (
-            <img
+            <a href="/login"><img
               src={userIcon}
               alt="user profile"
               loading="lazy"
               className="object-contain w-6"
-            />
+            /></a>
           )}
         </div>
       </div>
