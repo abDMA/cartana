@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 
 const Home = () => {
   const { cards, getAllCards, loading, error } = useGiftCards();
+ 
 
   useEffect(() => {
     getAllCards()
