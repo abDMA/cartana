@@ -16,14 +16,6 @@ export const createCheckoutSession = async (req, res) => {
 			const giftCard = await GiftCard.findById(_id)			
 			let availableSerials = giftCard?.serialNumber?.filter((serial)=> serial?.status === 'available')
 			 let availableQuantity = Math.min(quantity,availableSerials?.length)
-			if(availableSerials?.length ===0){
-				chosenCards =[]
-				skippedCard =[ {
-					cardName,
-					message:`لا يوجد عدد كافٍ من الارقام التسلسلية لهذه البطاقة`
-				}]
-				continue
-			}
 			for (let i = 0; i < availableQuantity; i++) {
 				const selectSerial = availableSerials?.pop()
 				const isAleadyShosen  = chosenSerials.some(card => card.serial === selectSerial.serial)
@@ -147,7 +139,10 @@ export const checkOutSuccess = async (req, res) => {
 				seller.orderId.push(newOrder._id)
 				await seller.save()
 			}
+			
+			
 			await sendCardsToCustomer(req.user.email,chosenSerials)
+			chosenCards =[]
 			res.status(200).json({
 				success: true,
 		     	message: "Payment successful, order created."
