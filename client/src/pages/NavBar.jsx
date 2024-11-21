@@ -113,7 +113,7 @@ const NavBar = () => {
         <div className="flex items-center gap-2">
           <BurgerList />
           <Link to={"/"} className="px-2">
-            <h1 className="text-3xl text-black font-bold ">كرتـــانــا</h1>
+            <h1 className="text-3xl text-black font-bold ">Marveleza</h1>
           </Link>
         </div>
         <div

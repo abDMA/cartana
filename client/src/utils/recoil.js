@@ -8,3 +8,7 @@ export const sectionNames = atom({
   key: 'sectionName',
   default:'', 
 });
+export const activeTab = atom({
+  key: 'activeTab',
+  default:'', 
+});

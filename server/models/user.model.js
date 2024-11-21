@@ -27,22 +27,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    cartItems:[
-        {
-        giftCard:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"GiftCard",
-        },
-        quantity:{
-            type:Number,
-            default:1
-        }
-    }
-],
-    pastTransactions: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Transaction"
-    }],
+ 
     isVerified:{
         type:Boolean,
         default:false

@@ -19,7 +19,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
     <p>أدخل هذا الرمز في صفحة التحقق لإكمال تسجيلك.</p>
     <p>ستنتهي صلاحية هذا الرمز خلال 15 دقيقة لأسباب أمنية.</p>
     <p>إذا لم تقم بإنشاء حساب معنا، يرجى تجاهل هذا البريد الإلكتروني.</p>
-    <p>أطيب التحيات،<br>كرتـــانــا</p>
+    <p>أطيب التحيات،<br>Marveleza</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
     <p>هذه رسالة تلقائية، يرجى عدم الرد على هذا البريد الإلكتروني.</p>
@@ -85,7 +85,7 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
       <a href="{resetURL}" style="background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">إعادة تعيين كلمة المرور</a>
     </div>
     <p>ستنتهي صلاحية هذا الرابط خلال ساعة واحدة لأسباب أمنية.</p>
-    <p>مع أطيب التحيات،<br>كرتــانــا</p>
+    <p>مع أطيب التحيات،<br>Marveleza</p>
   </div>
   <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;">
     <p>هذه رسالة تلقائية، يرجى عدم الرد على هذا البريد الإلكتروني.</p>
@@ -93,4 +93,4 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 </body>
 </html>
 `;
-export const sendCardsTemail = (cards) => { return ` <!DOCTYPE html> <html lang="ar"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>تفاصيل مشترياتك</title> </head> <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"> <div style="background: linear-gradient(to right, #4CAF50, #45a049); padding: 20px; text-align: center;"> <h1 style="color: white; margin: 0;">شكراً لتسوقك معنا!</h1> </div> <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"> <p>مرحباً،</p> <p>شكراً لك على عملية الشراء! فيما يلي تفاصيل البطاقات التي قمت بشرائها:</p> <div style="margin-top: 20px;"> ${cards .map((card) => ` <div style="border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 15px;"> <h2 style="margin: 0 0 10px;">${card.Name}</h2> <div style="text-align: center; margin-bottom: 15px;"> <img src="${card.img}" alt="${card.Name}" style="max-width: 100%; border-radius: 5px;"> </div> <p style="font-size: 18px; margin: 0;">serial : <strong>${card.serial}</strong></p> </div> ` ).join('')} </div> <p>نأمل أن تستمتع باستخدام بطاقاتك. إذا كانت لديك أي أسئلة، لا تتردد في التواصل معنا.</p> <p>أطيب التحيات،<br>فريق كرتـــانــا</p> </div> <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;"> <p>هذه رسالة تلقائية، يرجى عدم الرد على هذا البريد الإلكتروني.</p> </div> </body> </html> `; };
+export const sendCardsTemail = (cards) => { return ` <!DOCTYPE html> <html lang="ar"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>تفاصيل مشترياتك</title> </head> <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"> <div style="background: linear-gradient(to right, #4CAF50, #45a049); padding: 20px; text-align: center;"> <h1 style="color: white; margin: 0;">شكراً لتسوقك معنا!</h1> </div> <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"> <p>مرحباً،</p> <p>شكراً لك على عملية الشراء! فيما يلي تفاصيل البطاقات التي قمت بشرائها:</p> <div style="margin-top: 20px;"> ${cards .map((card) => ` <div style="border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 15px;"> <h2 style="margin: 0 0 10px;">${card.Name}</h2> <div style="text-align: center; margin-bottom: 15px;"> <img src="${card.img}" alt="${card.Name}" style="max-width: 100%; border-radius: 5px;"> </div> <p style="font-size: 18px; margin: 0;">serial : <strong>${card.serial}</strong></p> </div> ` ).join('')} </div> <p>نأمل أن تستمتع باستخدام بطاقاتك. إذا كانت لديك أي أسئلة، لا تتردد في التواصل معنا.</p> <p>أطيب التحيات،<br>فريق Marveleza</p> </div> <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8em;"> <p>هذه رسالة تلقائية، يرجى عدم الرد على هذا البريد الإلكتروني.</p> </div> </body> </html> `; };
