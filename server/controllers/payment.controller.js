@@ -33,7 +33,8 @@ export const createCheckoutSession = async (req, res) => {
 						_id,
 						Name:giftCard.cardName,
 						img:giftCard.cardImg,
-						serial:selectSerial?.serial
+						serial:selectSerial?.serial,
+						quantity:availableQuantity
 					}
 				)
 				}
@@ -109,12 +110,13 @@ export const checkOutSuccess = async (req, res) => {
 						{'serialNumber.serial':serial.serial},
 						{$set:{'serialNumber.$.status':'sold'}}
 					)
+				
 				  }
-				giftCard.stock -= quantity
-				if (giftCard.stock <= 0) {
-					giftCard.stock = 0
-					giftCard.availibilty ='غير متوفر'
-				}  
+				  giftCard.stock -= serial.quantity
+				  if (giftCard.stock <= 0) {
+					  giftCard.stock = 0
+					  giftCard.availibilty ='غير متوفر'
+				  } 
 				await giftCard.save()
 			sellerAmountsMap.set(sellerId,(sellerAmountsMap.get(sellerId)||0)+totalAmount)
 			}
@@ -139,7 +141,6 @@ export const checkOutSuccess = async (req, res) => {
 				seller.orderId.push(newOrder._id)
 				await seller.save()
 			}
-			
 			
 			await sendCardsToCustomer(req.user.email,chosenSerials)
 			chosenCards =[]

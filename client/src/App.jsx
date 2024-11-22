@@ -64,6 +64,23 @@ const App =()=> {
       <Route path="/products-and-services" element={  <AllWebsiteProperty Icon={GalleryHorizontalEnd} title={"Products and Srvices"} description={<ProductsSrvices/>}/>}/>
       <Route path="/policies" element={ <AllWebsiteProperty Icon={Scale} title={"Rules and Policies"} description={<Policies/>}/>}/>
       <Route path="/contact" element={<AllWebsiteProperty Icon={Headset} title={"Contact Information"} description={<Contact/>}/>}/>
+      <Route path="/success" element={<div className="flex justify-center items-center h-screen flex-col">
+      <h1>Transaction successfull</h1>
+      <p>thank you ! your payment was processed successfull</p>
+      <a href="/" className="px-3 py-1 cursor-pointer my-2 bg-cyan-400 rounded-md text-white"> return to home</a>
+      </div>}/>
+      <Route path="/fall" element={
+        <div className="flex justify-center items-center h-screen flex-col">
+        <h1>Transaction failed</h1>
+        <p>Unfortunately , your payment failed</p>
+        <a href="/" className="px-3 py-1 cursor-pointer my-2 bg-cyan-400 rounded-md text-white"> return to home</a>
+        </div>
+      }/>
+      <Route path="/status" element={<div className="flex justify-center items-center h-screen flex-col">
+      <h1>Transaction Status</h1>
+      <p>we are currentely checking ...</p>
+      <a href="/" className="px-3 py-1 cursor-pointer my-2 bg-cyan-400 rounded-md text-white"> return to home</a>
+      </div>}/>
     
     </Routes>
     </>
