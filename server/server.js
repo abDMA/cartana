@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 8000;
 const __dirname = path.resolve();
 app.use(cors({origin:`${process.env.CLIENT_URL}`,credentials:true}))
 app.use(express.json({ limit: "20mb" })); // allows you to parse the body of the request
+app.get('/')
 app.use(cookieParser())
 app.use(express.json())
 app.use('/api/giftCard',giftCardRoute)
@@ -26,6 +27,10 @@ app.use('/api/admin',adminRoute)
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/client/dist")));
+	app.use(express.static(path.join(__dirname, "/client/public")));
+	app.get('/payeer_2160473813.txt', (req, res) => {
+		res.sendFile(path.join(__dirname, "/client/public/payeer_2160473813.txt"));
+	})
 
 	app.get("*", (req, res) => {
 		res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
