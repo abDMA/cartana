@@ -110,14 +110,24 @@ export const checkOutSuccess = async (req, res) => {
 						{'serialNumber.serial':serial.serial},
 						{$set:{'serialNumber.$.status':'sold'}}
 					)
-				
+					const result = await GiftCard.updateOne(
+						{_id:serial._id},
+						{$inc:{stock:-serial.quantity}}
+					)
+					if (result.modifiedCount >0) {
+						const card = await GiftCard.findOne({
+							_id:serial._id
+						})
+						if(card && card.stock <= 0) {
+							await GiftCard.updateOne(
+								{_id:serial._id},
+								{$set:{availibilty:'غير متوفر',stock:0}}
+							)
+						}
+					}
+					
 				  }
-				  giftCard.stock -= serial.quantity
-				  if (giftCard.stock <= 0) {
-					  giftCard.stock = 0
-					  giftCard.availibilty ='غير متوفر'
-				  } 
-				await giftCard.save()
+				
 			sellerAmountsMap.set(sellerId,(sellerAmountsMap.get(sellerId)||0)+totalAmount)
 			}
 			const newOrder = new CardOrder({

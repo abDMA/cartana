@@ -42,7 +42,7 @@ const App =()=> {
   return (
     <>
     <Routes>
-      <Route path="/" element={ (user && !user?.isVerified ) ?<Navigate to="/email_verification" replace/> : <Home/>}/>
+      <Route path="/" element={ (user && !user?.isVerified ) ?<Navigate to="/email_verification" replace/> : <Home />}/>
       <Route path="/Admin_Dashboard" element={
         <ProtectedAdmin>
         <AdminPanel balance={user?.balance} userID={user?._id}/>

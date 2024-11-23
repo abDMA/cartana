@@ -28,8 +28,8 @@ app.use('/api/admin',adminRoute)
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/client/dist")));
 	app.use(express.static(path.join(__dirname, "/client/public")));
-	app.get('/payeer_2160473813.txt', (req, res) => {
-		res.sendFile(path.join(__dirname, "/client/public/payeer_2160473813.txt"));
+	app.get('/payeer_2161116081.txt', (req, res) => {
+		res.sendFile(path.join(__dirname, "/client/public/payeer_2161116081.txt"));
 	})
 
 	app.get("*", (req, res) => {
