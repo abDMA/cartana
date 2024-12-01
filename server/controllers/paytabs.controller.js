@@ -80,7 +80,7 @@ totalAmount = 0;
     let shipping_address = customer_details;
     
     let response_URLs = [
-       `${process.env.SERVER_URL}/api/paytabs/callback`,
+       `${process.env.CLIENT_URL}/api/paytabs/callback`,
        `${process.env.CLIENT_URL}/purchase-success`];
     
     let lang = "ar";
