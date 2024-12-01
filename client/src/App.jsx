@@ -11,6 +11,7 @@ import About from "./pages/About";
 import ProductsSrvices from "./pages/ProductsSrvices";
 import Policies from "./pages/Policies";
 import Contact from "./pages/Contact";
+import VipPanel from "./pages/VipPanel";
 const RedirectToHome = ({children})=>{
   const {isAuthenticated,user}=useAuthStore()
   if (isAuthenticated && user.isVerified) {
@@ -21,7 +22,7 @@ const RedirectToHome = ({children})=>{
 const ProtectedAdmin = ({children})=>{
   const {isAuthenticated,role}=useAuthStore()
 
-    if(isAuthenticated && role === 'VIP' || role === 'admin' ){
+    if(isAuthenticated && role === 'admin' ){
       return children
       } 
 
@@ -32,11 +33,13 @@ const ProtectedAdmin = ({children})=>{
 
 
 const App =()=> {
-  const {checkAuth,isCheckingAuth,user} = useAuthStore()
+  const {checkAuth,isCheckingAuth,user,isAuthenticated,role} = useAuthStore()
   useEffect(()=>{
    checkAuth()
    
  },[checkAuth])
+
+ 
  if (isCheckingAuth) return <LoadingSpinners /> 
 
   return (
@@ -47,6 +50,9 @@ const App =()=> {
         <ProtectedAdmin>
         <AdminPanel balance={user?.balance} userID={user?._id}/>
       </ProtectedAdmin>}/>
+      <Route path="/Vip_Dashboard" element={
+       (isAuthenticated  && role !=='regular') && <VipPanel chosenCard={user?.chosenCards} balance={user?.balance} />
+         }/>
       <Route path="/login" element={<RedirectToHome>
         <LogIn/></RedirectToHome>}/>
       <Route path="/signup" element={<RedirectToHome><SignUp/></RedirectToHome>}/>

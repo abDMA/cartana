@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import NavBar from './NavBar'
 import toast from 'react-hot-toast';
-import { handlePayment } from '../utils/handlPyment';
 import { useAuthStore } from '../store/authStore';
 import {  useNavigate } from 'react-router-dom';
+import { handlePaytab } from '../utils/handlePaytab';
 
 const ShopingCart = () => {
   const [data, setData] = useState([])
@@ -29,7 +29,7 @@ const handleCheck =async () => {
   if (!isAuthenticated) navigate('/login')
   setLoading(true)
   try {
-    await handlePayment(localCart)
+    await handlePaytab(localCart)
     setLoading(false)
   } catch (error) {
     console.log(error.message);

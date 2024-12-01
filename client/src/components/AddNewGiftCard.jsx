@@ -136,13 +136,13 @@ const selectedImgPicker = (e)=>{
  }
  
   return (
-    <Dialog key='add card'   >
+    <Dialog  >
       <DialogTrigger dir='rtl'>
       <Button className="bg-white text-violet-600 text-[10px] sm:w-auto w-24 sm:text-sm">
           إضافة  بطاقة جدبدة
         </Button>     
      </DialogTrigger>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="sm:max-w-3xl overflow-y-scroll h-[90%]">
         <DialogHeader>
           <DialogTitle>إضافة بطاقة جدبدة</DialogTitle>
           <DialogDescription>

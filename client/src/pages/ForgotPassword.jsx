@@ -21,11 +21,14 @@ const ForgotPassword = () => {
   }
   return (
     <section >
-    <div dir='rtl' className="flex justify-center items-center h-screen w-full ">
-      <motion.form initial={{opacity:0 ,y:20}} animate={{opacity:1 ,y:0,transition:{duration:0.4,ease:"easeInOut",delay:0.2}}} onSubmit={handleSubmit} className='bg-[#199ad181] card overflow-hidden   flex  flex-col rounded-xl'>
+    <div dir='rtl' className="wavey flex justify-center items-center h-screen w-full ">
+    <div className="wave"/>
+     <div className="wave"/>
+     <div className="wave"/>
+      <motion.form initial={{opacity:0 ,y:20}} animate={{opacity:1 ,y:0,transition:{duration:0.4,ease:"easeInOut",delay:0.2}}} onSubmit={handleSubmit} className='z-10 bg-[#83c5e1e1] card overflow-hidden   flex  flex-col rounded-xl'>
       <h1 className='text-3xl font-bold text-white  text-center my-6 mx-20'>نسيت كلمة المرور </h1>
     { !isSubmited ? (
-     <> <span className='  text-sm font-semibold  text-black  text-center my-4 '>أدخل بريدك الإلكتروني وسنرسل لك الرابط 
+     <> <span className='  text-sm font-semibold  text-white  text-center my-4 '>أدخل بريدك الإلكتروني وسنرسل لك الرابط 
      <br /> لإعادة تعيين كلمة المرور الخاصة بك
 </span>
         <InputValue onChange={(e)=>setEmail(e.target.value)} type="email" placeholder=' أدخــل بريدك الإلكتروني المرتبط بالحساب' icon={<Mail color="black" size={20}/>}/>

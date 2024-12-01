@@ -7,14 +7,15 @@ import Confetti from "react-confetti";
 const PurchaseSuccessPage = () => {
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [error, setError] = useState(null);
-
+	
 	useEffect(() => {
 		const handleCheckoutSuccess = async (sessionId) => {
 			try {
-				await axios.post('payment/checkout-success', {
+				await axios.post('paytabs/checkout-success', {
 					sessionId,
 				});
 				localStorage.removeItem("cartItems");
+				localStorage.removeItem("trace");
 			} catch (error) {
 				console.log(error.message);
 			} finally {
@@ -22,7 +23,7 @@ const PurchaseSuccessPage = () => {
 			}
 		};
 
-		const sessionId = new URLSearchParams(window.location.search).get("session_id");
+		const sessionId = JSON.parse(localStorage.getItem("trace")) || [];
 		if (sessionId) {
 			handleCheckoutSuccess(sessionId);
 		} else {
@@ -59,7 +60,8 @@ const PurchaseSuccessPage = () => {
 					شكرا لطلبك. {"نحن"} نقوم بمعالجته الآن.
 					</p>
 					<p className='text-emerald-400 text-center text-sm mb-6'>
-					تحقق من بريدك الإلكتروني للحصول على تفاصيل الطلب والتحديثات.
+					تحقق من بريدك الإلكتروني للحصول على تفاصيل الطلب والتحديثات.<br/>
+					<strong className="text-xs text-red-400 font-semibold ">ملاحظة:اذا لم تتلقى اي رسالة على بريدك الإلكتروني إضغط على الايقونة الخاصة بالبروفايل وستجد كل البطاقات</strong>
 					</p>
 
 					<div className='space-y-4'>

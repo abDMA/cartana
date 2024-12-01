@@ -1,9 +1,10 @@
 import express from 'express'
 import { vipOnly } from '../middleware/vipOnly.js'
 import { verifyToken } from '../middleware/verifyToken.js'
-import { createVipCard, deleteVipCard, editVipCard, getVipCard, getAllVipCards, updateVipAccount, getVipReport } from '../controllers/vipUser.controller.js'
+import { createVipCard, deleteVipCard, editVipCard, getVipCard, getAllVipCards, updateVipAccount, getVipReport, getVipFunds } from '../controllers/vipUser.controller.js'
 const router = express.Router()
 router.get('/',getAllVipCards)
+router.get('./getFunds',verifyToken,vipOnly,getVipFunds)
 router.get('/:id',getVipCard)
 router.get('/vip-report',verifyToken,vipOnly,getVipReport)
 router.post('/',verifyToken,vipOnly,createVipCard)

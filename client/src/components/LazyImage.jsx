@@ -1,6 +1,6 @@
 import{ useState, useEffect, useRef } from 'react';
  import ColorThief from 'colorthief';
-  const LazyImage = ({ src, alt,radius }) => { 
+  const LazyImage = ({ src, alt,radius ,objectFit}) => { 
     const [isLoaded, setIsLoaded] = useState(false);
      const [dominantColor, setDominantColor] = useState('rgba(200,200,200,0.3)'); 
      const imgRef = useRef();
@@ -12,7 +12,7 @@ import{ useState, useEffect, useRef } from 'react';
               return (
            <div style={{position:"relative"}}>
                 <img onLoad={() => setIsLoaded(true)} 
-                className={isLoaded?'loaded-img':'loading-image'} ref={imgRef} src={src} alt={alt} style={{ backgroundImage:"red", width: '100%', objectFit: 'contain',filter:isLoaded?'none':'blur(10px)', borderRadius:radius }}  /> 
+                className={isLoaded?'loaded-img':'loading-image'} ref={imgRef} src={src} alt={alt} style={{ backgroundImage:"red", width: '100%', objectFit: `${objectFit ?objectFit :'contain'}`,filter:isLoaded?'none':'blur(10px)', borderRadius:radius }}  /> 
                {!isLoaded && <div style={{backgroundColor:dominantColor}} className='absolute  top-0 left-0 w-full h-full '/>}
       
               </div>  

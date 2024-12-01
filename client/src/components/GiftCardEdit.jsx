@@ -140,7 +140,7 @@ useEffect(() => {
         <p className="text-sm">تعديل البطاقة </p>
        
      </DialogTrigger>
-      <DialogContent onCloseAutoFocus={(e)=>e.preventDefault()} className="sm:max-w-3xl">
+      <DialogContent onCloseAutoFocus={(e)=>e.preventDefault()} className="sm:max-w-3xl overflow-y-scroll h-[90%]">
         <DialogHeader>
           <DialogTitle>تعديل البطاقة    
           </DialogTitle>

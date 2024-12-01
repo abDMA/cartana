@@ -11,11 +11,12 @@ import {
   
 import useGiftCards from '../store/useGiftCards';
 import GiftCard from './GiftCard';
+import { useAuthStore } from '../store/authStore';
 const SearchBtn = () => {
   const [searchData,setSearchData]= useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const {searchedCad,getSearchdData,searchLoading} = useGiftCards();
-
+  const {searchedCad,getSearchdData,searchLoading} = useGiftCards()
+  const {role} = useAuthStore()
 
   const handleEnter = (e)=>{
     if (e.key === 'Enter'){
@@ -23,8 +24,10 @@ const SearchBtn = () => {
      getSearchdData(searchData.length>2 && searchData ,"","")
     }
   }
- 
-   
+  const regular = searchedCad?.giftCard?.map(card=>card).filter(card => 
+    card.cardType
+    !==
+    "VipCard")
   return (
     <>
          <Dialog   className="md:hidden block">
@@ -50,10 +53,13 @@ const SearchBtn = () => {
             `}>
               
         {
-          searchLoading? <p>جارٍ تحميل البطاقات ...</p>: searchedCad?.giftCard?.length <= 0 ? <p>لا يوجد بطاقات متوفرة</p>:
+           (role ==='admin' || role === 'VIP') ?searchLoading? <p>جارٍ تحميل البطاقات ...</p>: searchedCad?.giftCard?.length <= 0 ? <p>لا يوجد بطاقات متوفرة</p>:
           searchedCad?.giftCard?.map((card)=>(
                 <GiftCard id={card._id} key={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.name} available={card.availibilty}/>       
-            ))
+            )):searchLoading? <p>جارٍ تحميل البطاقات ...</p>: regular?.giftCard?.length <= 0 ? <p>لا يوجد بطاقات متوفرة</p>:
+            regular?.giftCard?.map((card)=>(
+                  <GiftCard id={card._id} key={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.name} available={card.availibilty}/>       
+              ))
         } 
        
     </div>
@@ -78,12 +84,16 @@ const SearchBtn = () => {
              grid ${searchedCad?.giftCard?.length <= 3 ? "grid-cols-2" : "grid-cols-3"} flex-wrap items-center    my-4 w-full h-full
             `}>
             
-              {
-          searchLoading? <p className='mx-4'>جارٍ تحميل البطاقات ...</p>: searchedCad?.giftCard?.length <= 0 ? <p  className='mx-6'>لا يوجد بطاقات متوفرة</p>:
-          searchedCad?.giftCard?.slice(0,8).map((_,i)=>(
-                <GiftCard key={i} id={_._id} title={_.cardName} img={_.cardImg} price={_.price} alt={_.name} available={_.availibilty}/>       
-            ))
-        }
+                   
+        {
+           (role ==='admin' || role === 'VIP') ?searchLoading? <p>جارٍ تحميل البطاقات ...</p>: searchedCad?.giftCard?.length <= 0 ? <p>لا يوجد بطاقات متوفرة</p>:
+          searchedCad?.giftCard?.map((card)=>(
+                <GiftCard id={card._id} key={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.name} available={card.availibilty}/>       
+            )):searchLoading? <p>جارٍ تحميل البطاقات ...</p>: regular?.giftCard?.length <= 0 ? <p>لا يوجد بطاقات متوفرة</p>:
+            regular?.giftCard?.map((card)=>(
+                  <GiftCard id={card._id} key={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.name} available={card.availibilty}/>       
+              ))
+        } 
             </div>
 
             </div></>

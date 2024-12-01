@@ -44,8 +44,11 @@ const SignUp = () => {
   return (
     <section >
 
-    <div dir='rtl' className="flex justify-center items-center h-screen w-full "><input type="file"  hidden  ref={filePickerRef} onChange={selectedImgPicker} /> 
-      <motion.form initial={{opacity:0 ,y:20}} animate={{opacity:1 ,y:0,transition:{duration:0.4,ease:"easeInOut",delay:0.2}}} onSubmit={handleSubmit} className='card bg-[#199ad181] overflow-hidden   flex  flex-col rounded-xl'>
+    <div dir='rtl' className="wavey flex justify-center items-center h-screen w-full "><input type="file"  hidden  ref={filePickerRef} onChange={selectedImgPicker} /> 
+    <div className="wave"/>
+     <div className="wave"/>
+     <div className="wave"/>
+      <motion.form initial={{opacity:0 ,y:20}} animate={{opacity:1 ,y:0,transition:{duration:0.4,ease:"easeInOut",delay:0.2}}} onSubmit={handleSubmit} className='z-10 card bg-[#83c5e1e1] overflow-hidden   flex  flex-col rounded-xl'>
       <h1 className='text-3xl font-semibold text-white  text-center my-6 mx-20'>إنشاء حساب جديد </h1>
         <InputValue value={userName} onChange={(e)=>setUserName(e.target.value)} type="text" placeholder='إسم المستخدم' icon={<UserRound color="black" size={20}/>}/>
         <InputValue value={email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder='البريد الإلكتروني' icon={<Mail color="black" size={20}/>}/>

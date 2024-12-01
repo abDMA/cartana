@@ -32,14 +32,27 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
+    chosenCards: [
+         { Name: String, 
+            img: String,
+            price:Number,
+            cardType: String,
+             serial:{
+                type:String,
+                unique:true
+             }, 
+            isRedeemed: 
+            { type: Boolean, 
+            default: false } } ],
+   redeemCards:[{ type: String }],
     orderId:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'CardOrder'
     }],
+     createdAt: {
+        type: Date,
+        default: Date.now
+    },
     resetPasswordToken:String,
     resetPasswordTokenxpireAt:Date,
     verificationToken:String,

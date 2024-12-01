@@ -22,8 +22,11 @@ const LogIn = () => {
   }
   return (
     <section >
-    <div dir='rtl' className="flex justify-center items-center h-screen w-full ">
-      <motion.form initial={{opacity:0 ,y:20}} animate={{opacity:1 ,y:0,transition:{duration:0.4,ease:"easeInOut",delay:0.2}}} onSubmit={handleSubmit} className='card overflow-hidden   flex  flex-col rounded-xl bg-[#199ad181] '>
+    <div dir='rtl' className="wavey flex justify-center items-center h-screen w-full ">
+    <div className="wave"/>
+     <div className="wave"/>
+     <div className="wave"/>
+      <motion.form initial={{opacity:0 ,y:20}} animate={{opacity:1 ,y:0,transition:{duration:0.4,ease:"easeInOut",delay:0.2}}} onSubmit={handleSubmit} className='z-10 card overflow-hidden   flex  flex-col rounded-xl bg-[#83c5e1e1] '>
       <h1 className='text-3xl font-semibold text-white  text-center my-6 mx-20'>مرحبا مجددا </h1>
         <InputValue onChange={(e)=>setEmail(e.target.value)} type="email" placeholder='البريد الإلكتروني' icon={<Mail color="black" size={20}/>}/>
         <InputValue onChange={(e)=>setPassword(e.target.value)}  type="password" placeholder='كلمة السر' icon={<KeyRound  color="black" size={20}/>} 

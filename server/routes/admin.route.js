@@ -1,10 +1,12 @@
 import express from 'express'
 const router = express.Router()
 import {adminOnly} from '../middleware/adminOnly.js'
-import { Adminedit, createUser, deleteReport, deleteUser, editUser, getAllUsers, getReport, getUser, getVipBalance, vipTransactions } from '../controllers/admin.controller.js'
+import { Adminedit, createUser, deleteReport, deleteUser, editUser, getAllUsers, getReport, getUser, getVipBalance, getVipFunds, vipTransactions } from '../controllers/admin.controller.js'
 import { verifyToken } from '../middleware/verifyToken.js'
+import { vipOnly } from '../middleware/vipOnly.js'
 
 router.post('/',verifyToken,adminOnly,createUser)
+router.post('/getFunds',verifyToken,vipOnly,getVipFunds)
 router.get('/',verifyToken,adminOnly,getAllUsers)
 router.get('/admin-report',verifyToken,adminOnly,getReport)
 router.get('/vip-balance',verifyToken,adminOnly,getVipBalance)

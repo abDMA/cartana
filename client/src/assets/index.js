@@ -23,4 +23,5 @@ import defaulUserProfile from './deafultuser.png'
 import playstation from './playstation.webp'
 import footer from './footer.svg'
 import defaultGiftCard from './defaultGiftCard.png'
-export {product1,userIcon,shopingBag,burgerList,search,searchList,arrow,test,ad,ad2,defaulUserProfile,pubg,amazon,fortnite,itunes,ludo,apple,stc,xbox,net,razer,talabat,playstation,footer,defaultGiftCard}
+import circle from './Circle.svg'
+export {product1,userIcon,shopingBag,burgerList,search,searchList,arrow,test,ad,ad2,defaulUserProfile,pubg,amazon,fortnite,itunes,ludo,apple,stc,xbox,net,razer,talabat,playstation,footer,defaultGiftCard,circle}

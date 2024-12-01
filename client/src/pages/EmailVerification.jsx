@@ -66,6 +66,7 @@ const EmailVerification = () => {
   return (
     <section >
 <div  className="flex justify-center items-center h-screen w-full bg-[#199ad181] ">
+
 		<div >
 			<motion.div
 				initial={{ opacity: 0, y: -50 }}

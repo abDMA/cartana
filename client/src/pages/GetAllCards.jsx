@@ -13,11 +13,11 @@ import Footer from "./Footer";
 import NavBar from "./NavBar";
 import GiftCard from "../components/GiftCard";
 import { ArrowDownUp, Filter } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
 
 
 const GetAllCards = () => {
-  
-
+  const {role} = useAuthStore()
   const { searchedCad, getSearchdData, loading, error } = useGiftCards();
   
   const [sort, setSort] = useState("newest");
@@ -29,7 +29,10 @@ const GetAllCards = () => {
       sort
     );
   }, [getSearchdData,sort,filterValue]);
-
+  const regular = searchedCad?.giftCard?.map(card=>card).filter(card => 
+    card.cardType
+    !==
+    "VipCard")
   return (
     <>
       <NavBar />
@@ -129,7 +132,7 @@ const GetAllCards = () => {
             <p className="mx-6">لا يوجد بطاقات متوفرة</p>
           ) : error ? (
             <p className="text-red-600 text-xs ">{error}</p>
-          ) : (
+          ) : role === 'admin' || role ==='VIP'? (
             searchedCad?.giftCard
               ?.slice(0, 8)
               .map((card) => (
@@ -144,7 +147,23 @@ const GetAllCards = () => {
                   available={card.availibilty}
                 />
               ))
-          )}
+          ):(
+           regular
+              ?.slice(0, 8)
+              .map((card) => (
+                <GiftCard
+                  card={card}
+                  key={card._id}
+                  id={card._id}
+                  title={card.cardName}
+                  img={card.cardImg}
+                  price={card.price}
+                  alt={card.cardName}
+                  available={card.availibilty}
+                />
+              ))
+          )
+          }
         </div>
       </section>
       <Footer />

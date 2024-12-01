@@ -13,9 +13,10 @@ import BurgerList from "../components/BurgerList";
 import SearchBtn from "../components/SearchBtn";
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
-import { handlePayment } from "../utils/handlPyment.jsx";
 import { useRecoilState } from "recoil";
 import { count, sectionNames } from "../utils/recoil.js";
+import ShowUserCards from "../components/ShowUserCards.jsx";
+import { handlePaytab } from "../utils/handlePaytab.jsx";
 
 const NavBar = () => {
   const [userPicture, setUserPicture] = useState(null);
@@ -47,7 +48,7 @@ const NavBar = () => {
   if (!isAuthenticated) navigate('/login')
   setLoading(true)
   try {
-    await handlePayment(localCart,isAuthenticated)
+    await handlePaytab(localCart)
     setLoading(false)
   } catch (error) {
     console.log('something happen',error);
@@ -91,10 +92,10 @@ const NavBar = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       await login(selctedValue.email, selctedValue.password);
+      location.reload()
     } catch (error) {
       console.log("err from loggin in", error);
     }
@@ -102,6 +103,7 @@ const NavBar = () => {
 
   const handLogout = () => {
     logout();
+    location.reload()
   };
 
   return (
@@ -253,30 +255,47 @@ const NavBar = () => {
               </div>
             </HoverCardContent>
           </HoverCard>
+          
           {user?.userPicture ? (
-            <div
-              onClick={() => (!isOpen ? setIsOpen(true) : setIsOpen(false))}
-              className="relative cursor-pointer "
-            >
-              <img
+            <div className="relative">
+            <div  onClick={() => setIsOpen(true)}
+              className="relative cursor-pointer ">
+                <img
                 src={user?.userPicture}
                 alt="profile picture"
                 className="w-10 h-10 rounded-full"
               />
+              </div>
+              <div onClick={()=>setIsOpen(false)} className={`${isOpen ? 'absolute' :'hidden'} top-10 right-3 bg-black rounded-full w-5 h-5 z-10 flex items-center justify-center active:bg-red-500 hover:bg-red-300 cursor-pointer`}>
+              <span className='text-white font-bold text-xs'>X</span>
+              </div>
+            <div
+            >  
               {isOpen && (
                 <div className=" px-2  shadow-md bg-white absolute top-12 left-0 rounded-md ">
                   <p className="font-bold text-sm px-3 pt-2">{user?.email}</p>
                   <p className="font-medium text-xs px-3 mb-5 ">
                     {user?.userName}@
                   </p>
-                  {role === "regular" ? '' : (
+                  {role === "admin" ?  (
                     <a
                       href="/Admin_Dashboard"
-                      className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md "
+                      className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md hover:bg-sky-300 active:bg-sky-400 "
                     >
-                      إننقل الى لوحة التحكم
+                      إنتقل الى لوحة التحكم
                     </a>
-                  )}
+                  ):''}
+                  {role ==='VIP' &&
+                   <a
+                   href="/Vip_Dashboard"
+                   className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md hover:bg-sky-300 active:bg-sky-400 "
+                 >
+                   إنتقل الى صفحة المشـتريات 
+                 </a>
+                  }
+                   {role ==='regular' &&
+                 <ShowUserCards chosenCards={user?.chosenCards}/>
+                  }
                   <div
                     onClick={handLogout}
                     className="flex w-full items-center justify-between  my-3 hover:bg-slate-200 cursor-pointer  py-2 px-4 rounded-md"
@@ -287,12 +306,13 @@ const NavBar = () => {
                 </div>
               )}
             </div>
+            </div>
           ) : (
             <div className="flex items-center gap-1 text-sm font-bold text-[#000000c0] ">
               <Link>
                 <HoverCard>
                   <HoverCardTrigger>
-                    <p className="hover:underline">تسجيل الدخول/</p>
+                    <Link to="/login" className="hover:underline">تسجيل الدخول/</Link>
                   </HoverCardTrigger>
                   <HoverCardContent className="flex justify-center items-center flex-col gap-2">
                     <p className="my-2">سجِّل دخولك الى حسابك</p>
@@ -345,7 +365,7 @@ const NavBar = () => {
               <Link>
                 <HoverCard>
                   <HoverCardTrigger>
-                    <p className="hover:underline">حساب جديد</p>
+                    <Link to="/signup" clLinkssName="hover:underline">حساب جديد</Link>
                   </HoverCardTrigger>
                   <HoverCardContent className="flex justify-center items-center flex-col gap-2">
                     <p className="my-2">سجِّل حساب جديد</p>
@@ -444,30 +464,48 @@ const NavBar = () => {
             </span>
           </Link>
           {user?.userPicture ? (
-            <div
-              onClick={() => (!isOpen ? setIsOpen(true) : setIsOpen(false))}
-              className="relative cursor-pointer "
-            >
-              <img
+            <div className="relative">
+            <div  onClick={() => setIsOpen(true)}
+              className="relative cursor-pointer ">
+                <img
                 src={user?.userPicture}
                 alt="profile picture"
                 className="w-8 h-8 rounded-full"
               />
+              </div>
+              <div onClick={()=>setIsOpen(false)} className={`${isOpen ? 'absolute' :'hidden'} top-10 right-3 bg-black rounded-full w-5 h-5 z-10 flex items-center justify-center active:bg-red-500 hover:bg-red-300 cursor-pointer`}>
+              <span className='text-white font-bold text-xs'>X</span>
+              </div>
+            <div
+            >  
               {isOpen && (
                 <div className=" px-2  shadow-md bg-white absolute top-12 left-0 rounded-md ">
                   <p className="font-bold text-sm px-3 pt-2">{user?.email}</p>
-                  <p className="font-medium text-xs px-3 mb-2 ">{user?.userName}@</p>
-                  {role === "regular" ? "" : (
+                  <p className="font-medium text-xs px-3 mb-5 ">
+                    {user?.userName}@
+                  </p>
+                  {role === "admin" ?  (
                     <a
                       href="/Admin_Dashboard"
-                      className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md "
+                      className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md hover:bg-sky-300 active:bg-sky-400 "
                     >
-                      إننقل الى لوحة التحكم
+                      إنتقل الى لوحة التحكم
                     </a>
-                  )}
+                  ):''}
+                  {role ==='VIP' &&
+                   <a
+                   href="/Vip_Dashboard"
+                   className="font-medium text-xs px-3 bg-sky-400 mt-3 text-white py-1 rounded-md hover:bg-sky-300 active:bg-sky-400 "
+                 >
+                   إنتقل الى صفحة المشـتريات 
+                 </a>
+                  }
+                   {role ==='regular' &&
+                 <ShowUserCards chosenCards={user?.chosenCards}/>
+                  }
                   <div
                     onClick={handLogout}
-                    className="flex w-full items-center justify-between  my-2 hover:bg-slate-200 cursor-pointer  py-2 px-4 rounded-md"
+                    className="flex w-full items-center justify-between  my-3 hover:bg-slate-200 cursor-pointer  py-2 px-4 rounded-md"
                   >
                     <p className="text-xs">تسجيل الخروج</p>
                     <LogOut color="red" size={20} />
@@ -475,6 +513,8 @@ const NavBar = () => {
                 </div>
               )}
             </div>
+            </div>
+           
           ) : (
             <a href="/login"><img
               src={userIcon}

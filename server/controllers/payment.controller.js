@@ -6,7 +6,8 @@ import { sendCardsToCustomer } from '../mailTrap/email.js.js';
 let chosenSerials =[]
 let chosenCards = []
 export const createCheckoutSession = async (req, res) => {
-	
+chosenCards =[]
+chosenSerials=[]
 	try {
 		const { giftCards } = req.body;
 		if (!Array.isArray(giftCards) || giftCards.length === 0) {
@@ -34,6 +35,8 @@ export const createCheckoutSession = async (req, res) => {
 						Name:giftCard.cardName,
 						img:giftCard.cardImg,
 						serial:selectSerial?.serial,
+						price,
+						cardType:giftCard.cardType,
 						quantity:availableQuantity
 					}
 				)
@@ -95,7 +98,10 @@ export const checkOutSuccess = async (req, res) => {
 		const { sessionId } = req.body;
 		const session = await stripe.checkout.sessions.retrieve(sessionId);		
 		if (session.payment_status === "paid") {
-			// create a new Order
+				 const existingOrder = await CardOrder.findOne({ stripeSessionId: sessionId });
+				  if (existingOrder) {
+					 return res.status(200).json({ success: true, message: "Order already processed." }); 
+				  }
 			const giftCards = JSON.parse(session.metadata.giftCards_data);
 			const buyerId = session.metadata.userId
 			let sellerId
@@ -105,28 +111,7 @@ export const checkOutSuccess = async (req, res) => {
 				const giftCard = await GiftCard.findById(id)
 				if(!giftCard) throw new Error('لم يتم العثور على البطاقة')
 				sellerId = giftCard.seller
-				for (const serial of chosenSerials){
-					await GiftCard.updateOne(
-						{'serialNumber.serial':serial.serial},
-						{$set:{'serialNumber.$.status':'sold'}}
-					)
-					const result = await GiftCard.updateOne(
-						{_id:serial._id},
-						{$inc:{stock:-serial.quantity}}
-					)
-					if (result.modifiedCount >0) {
-						const card = await GiftCard.findOne({
-							_id:serial._id
-						})
-						if(card && card.stock <= 0) {
-							await GiftCard.updateOne(
-								{_id:serial._id},
-								{$set:{availibilty:'غير متوفر',stock:0}}
-							)
-						}
-					}
-					
-				  }
+			
 				
 			sellerAmountsMap.set(sellerId,(sellerAmountsMap.get(sellerId)||0)+totalAmount)
 			}
@@ -145,14 +130,38 @@ export const checkOutSuccess = async (req, res) => {
 			});
 			await newOrder.save();
 			const seller = await User.findById(sellerId)
-			
 			if (seller && seller.userType !== 'regular') {
 				seller.balance += session.amount_total /100,
 				seller.orderId.push(newOrder._id)
 				await seller.save()
 			}
-			
+			for (const serial of chosenSerials){
+				await GiftCard.updateOne(
+					{'serialNumber.serial':serial.serial},
+					{$set:{'serialNumber.$.status':'sold'}}
+				)
+				const result = await GiftCard.updateOne(
+					{_id:serial._id},
+					{$inc:{stock: -serial.quantity}}
+				)
+				if (result.modifiedCount >0) {
+					const card = await GiftCard.findOne({
+						_id:serial._id
+					})
+					if(card && card.stock <= 0) {
+						await GiftCard.updateOne(
+							{_id:serial._id},
+							{$set:{availibilty:'غير متوفر',stock:0}}
+						)
+					}
+				}
+				
+			  }
+			const user = await User.findById(buyerId);
+			 user.chosenCards.push(...chosenSerials.map(serial => ({ Name: serial.Name, img: serial.img, serial: serial.serial,price:serial.price,cardType:serial.cardType, isRedeemed: false }))); 
+			 await user.save();
 			await sendCardsToCustomer(req.user.email,chosenSerials)
+			chosenSerials=[]
 			chosenCards =[]
 			res.status(200).json({
 				success: true,

@@ -4,18 +4,19 @@ import useGiftCards from "../store/useGiftCards";
 import LazyImage from "../components/LazyImage";
 import {NavBar,Footer} from './index'
 import GiftCard from "../components/GiftCard";
-import { handlePayment } from "../utils/handlPyment";
 import { useAuthStore } from "../store/authStore";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-
+import { handlePaytab } from "../utils/handlePaytab";
+ 
 
 const GetGiftCard = () => {
     const [counter, setCounter] = useState(1)
-    const [isloading, setIsLoading] = useState(false)
+    const [isloading, setIsLoading] = useState(false)  
     const navigate = useNavigate()
-    const {isAuthenticated} = useAuthStore()
+    const {isAuthenticated,role,user} = useAuthStore()
 
+ 
 const {getCard,card,loading,error,getRelatedCard,relatedCard} = useGiftCards()
 const stopInc = card?.serialNumber?.filter(serial => serial.status === 'available')
 
@@ -23,7 +24,11 @@ const { id } = useParams();
 useEffect(() => {
   getCard(id)
   getRelatedCard(id)
-}, [getCard,getRelatedCard])
+}, [getCard,getRelatedCard,id])
+const regular = relatedCard?.map(card=>card).filter(card => 
+  card.cardType
+  !==
+  "VipCard")
 
 const buyCard =[{
   _id:card._id,
@@ -36,7 +41,7 @@ const buyCard =[{
     if (!isAuthenticated) navigate('/login')
     setIsLoading(true)
     try {
-      await handlePayment(buyCard)
+      handlePaytab(buyCard)
       setIsLoading(false)
     } catch (error) {
       console.log('something happen',error);
@@ -45,14 +50,20 @@ const buyCard =[{
       setIsLoading(false)
     }
   }
+  if ( card.cardType ==='VipCard' &&(!user || role ==='regular') ) {
+    return (
+      <div className="flex items-center justify-center h-screen">لا توجد هــذه البــطاقة</div>
+    )
+  } 
   return (
     <>
     <NavBar/>
     <div dir="rtl" className="max-w-5xl min-h-full mx-auto xss:px-2 px-6  my-10 gap-4 mb-16">
-
+  
     {
+   
       loading?<p className="mx-4 my-24">جارٍ تحميل البطاقات ...</p>:
-       card?.giftCard?.length <= 0 ? <p className="mx-6">لا يوجد بطاقات متوفرة</p> : error ? <p className="text-red-600 text-xs ">{error}</p> : 
+       card?.giftCard?.length <= 0 ? <p className="mx-6">لا يوجد بطاقات متوفرة</p> : error ? <p className="text-red-600 text-xs">{error}</p> : 
       (<div className=" flex items-center gap-7 flex-col">
       <div className="w-full flex items-end gap-3 ">
         <div>
@@ -75,7 +86,7 @@ const buyCard =[{
           </div>
           <p className="text-xl font-semibold">{card.price} $</p>
         </div>
-        <Button disabled={isloading} onClick={handleCheck} className="w-full flex items-center justify-center bg-[#0D94CF] text-white py-2 rounded-md
+        <Button disabled={isloading || card.availibilty === "غير متوفر"} onClick={handleCheck} className="w-full flex items-center justify-center bg-[#0D94CF] text-white py-2 rounded-md
          hover:bg-[#0D94CF]/80 active:bg-[#0D94CF]">
         {
           isloading ? 'جارٍ الدفع ...' : 'اشتري الان'
@@ -93,9 +104,11 @@ const buyCard =[{
         {
           loading?<p className="mx-4">جارٍ تحميل البطاقات ...</p>:
           error ? <p className="text-red-600 text-xs ">{error}</p>:
-            relatedCard?.slice(0,8).map((card)=>(
-                <GiftCard key={card._id} id={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.cardName} available={card.availibilty}/>       
-            ))
+          (role ==='admin' || role ==='VIP')?  relatedCard?.slice(0,8).map((card)=>(
+                <GiftCard card={card} key={card._id} id={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.cardName} available={card.availibilty}/>       
+            )):regular?.slice(0,8).map((card)=>(
+              <GiftCard card={card} key={card._id} id={card._id} title={card.cardName} img={card.cardImg} price={card.price} alt={card.cardName} available={card.availibilty}/>       
+          ))
         }
        
     </div>

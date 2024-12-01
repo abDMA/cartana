@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import { generateTokenAndeSetCookie } from "../utils/generateTokenAndeSetCookie.js";
 import Order from "../models/cardOrder.model.js";
 import CardOrder from "../models/cardOrder.model.js";
+import GiftCard from "../models/card.model.js";
 
 
 export const getAllUsers = async (req, res) => {
@@ -260,3 +261,48 @@ export const deleteReport = async  (req,res)=>{
         
     }
 }
+export const getVipFunds = async(req,res)=>{
+    
+const {serialNumber} = req.body
+try {
+const giftCard = await GiftCard.findOne({
+    'serialNumber.serial':serialNumber,
+    'serialNumber.status':"sold"
+})
+if (!giftCard) {
+    return res.status(404).json({message:"خطأ في رقم البطاقة"})
+}
+const cardOrder = await CardOrder.findOne({
+'giftCards.giftCard': giftCard._id,
+    buyer: req.user._id
+}).populate('giftCards.giftCard', 'serialNumber cardType');
+if (!cardOrder) {
+    return res.json({message:"خطـأ في اضافة البطاقة الى الطلب"})
+}
+
+const isSerialIncluded = cardOrder.giftCards.some(card => card.giftCard.serialNumber.some(serial => serial.serial === serialNumber && serial.status === 'sold' && card.giftCard.cardType === 'VipCard' ) );
+
+
+if (isSerialIncluded) { 
+     const user = await User.findById(req.user._id); 
+     if (user.redeemCards.includes(serialNumber)) { 
+        return res.status(400).json({ message: "هذه البطاقة تم استخدامها من قبل" })}
+    user.chosenCards.forEach(card=>{
+        if(card.serial === serialNumber && card.isRedeemed === false){
+            card.isRedeemed =true
+            user.redeemCards.push(card.serial)
+        }
+     } )
+   
+       user.balance += giftCard.price; 
+       await user.save()
+ return res.json({ message: "تم إضافة الرصيد إلى حسابك", newBalance: user.balance }); }
+
+  return res.status(400).json({ message: "البطاقة غير موجودة في الطلب" });
+
+    } catch (error) {
+        console.log("err with get vip funds in vip admin",error);
+        res.status(500).json({message:error.message||'حدث خطاء ما'})
+    }
+}
+

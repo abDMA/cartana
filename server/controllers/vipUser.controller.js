@@ -161,3 +161,20 @@ try {
     res.status(500).json({message:error.message||'حدث خطاء ما'})
 }
 }
+export const getVipFunds = async(req,res)=>{
+    try {
+const {serialNumber} = req.body
+const giftCard = await GiftCard.findOne({serialNumber})
+if (!giftCard) {
+    return res.status(404).json({message:"خطأ في رقم البطاقة"})
+}
+const serial =  giftCard.serialNumber.filter((serial) => serial.serial === serialNumber)
+console.log(serial)
+if (serial.status === 'available') {
+    res.json({message:"لقد استخدمت هذه البطاقة من قبل"})
+}
+    } catch (error) {
+        console.log("err with get vip funds in vip admin",error);
+        res.status(500).json({message:error.message||'حدث خطاء ما'})
+    }
+}
