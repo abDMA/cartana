@@ -41,7 +41,7 @@ const buyCard =[{
     if (!isAuthenticated) navigate('/login')
     setIsLoading(true)
     try {
-      handlePaytab(buyCard)
+     await handlePaytab(buyCard)
       setIsLoading(false)
     } catch (error) {
       console.log('something happen',error);
