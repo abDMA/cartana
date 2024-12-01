@@ -7,7 +7,9 @@ import Confetti from "react-confetti";
 const PurchaseSuccessPage = () => {
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [error, setError] = useState(null);
-	
+	setTimeout(()=>{
+		location.reload()
+	},3000)
 	useEffect(() => {
 		const handleCheckoutSuccess = async (sessionId) => {
 			try {
