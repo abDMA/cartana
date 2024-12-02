@@ -7,9 +7,12 @@ import Confetti from "react-confetti";
 const PurchaseSuccessPage = () => {
 	const [isProcessing, setIsProcessing] = useState(true);
 	const [error, setError] = useState(null);
-	setTimeout(()=>{
-		location.reload()
-	},3000)
+	console.log("title",document.title)
+
+	if (document.title.includes('Cannot POST')) {
+		window.location.href = window.location.href.split('?')[0]
+	}
+	
 	useEffect(() => {
 		const handleCheckoutSuccess = async (sessionId) => {
 			try {
