@@ -24,6 +24,10 @@ app.use('/api/payment',paymentRoute)
 app.use('/api/auth',authRoute)
 app.use('/api/admin',adminRoute)
 app.use('/api/paytabs',paytabsRoute)
+app.post('/purchase-success',(req,res)=>{
+	console.log(req.body);
+	res.redirect('/purchase-success')
+})
 
 
 
