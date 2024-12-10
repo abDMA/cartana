@@ -29,12 +29,7 @@ useEffect(() => {
   setGiftCard(giftCards?.filter((card) => card._id === id)); 
 }, [])
 const [allSerials, setAllSerials] = useState([])
-
-
-  
-
-
-
+const [sendedSerials, setSendedSerials] = useState([])
 const [cardName, setcardName] = useState('')
 const [price, setPrice] = useState('')
 const [cardImg, setCardImg] = useState('')
@@ -48,11 +43,9 @@ const [availibilty, setAvailibilty] = useState('')
 const [errorCard, setErrorCard] = useState(false)
 const {editGiftCard,loading,error,checkSerialNumber,ValidSerial,checking}=useGiftCards()
   const serial = giftCard[0]?.serialNumber.map((serial)=>serial) || [""]
-
+  const zian = allSerials?.map((num) => num.serial)
 useEffect(() => {
-
   setAllSerials(serial)
-
 }, [giftCard])
 
 const generateSerialNumber = (length) => {
@@ -101,12 +94,13 @@ const selectedImgPicker = (e)=>{
  const handleCreateUser = async (e)=>{
   e.preventDefault()
   try {
-    await editGiftCard(id,cardName,price,cardOverView,cardImg,allSerials,cardType,cardGenre,stock,category,availibilty)
+    await editGiftCard(id,cardName,price,cardOverView,cardImg,sendedSerials?sendedSerials:zian,cardType,cardGenre,stock,category,availibilty)
     setcardName('')
     setPrice('')
     setCardImg('')
     setCardOverView
     setAllSerials('')
+    setSendedSerials([])
     setCardType('')
     setCardGenre('')
     setStock('')
@@ -119,21 +113,28 @@ const selectedImgPicker = (e)=>{
  }
  const handleAddSerial = ()=>{
   if(serialNumber.trim() && !allSerials?.includes(serialNumber)){
-    setAllSerials([...allSerials,serialNumber.trim()])
+    setAllSerials([...allSerials,{serial:serialNumber.trim(),status:'available'}])
+    setSendedSerials([...zian,serialNumber])
     setSerialNumber('')
   }
 }
 
+
+
 const removeSerial=(serial)=>{
-  setAllSerials(allSerials?.filter((num) => num !== serial));
+  setAllSerials(allSerials?.filter((num) => num.serial !== serial));
 }
+
 useEffect(() => {
-  if(allSerials?.length >  Number(giftCard[0]?.stock)){
+    
+  if(allSerials?.length >  Number(stock ? stock :giftCard[0]?.stock)){
    setErrorCard(true)
   }else{
    setErrorCard(false)
   }
  }, [allSerials?.length])
+
+
   return (
     <Dialog   >
       <DialogTrigger dir='rtl' className='hover:bg-slate-100 w-full text-left px-2 py-1'>
@@ -179,7 +180,7 @@ useEffect(() => {
             البطاقات المتوفرة حدث رقم المخزون او الارقام التسلسلية</p>}
             {
                   allSerials?.map((serial) =>
-                       <div key={serial.serial} onClick={() => removeSerial(serial.serial)} className=" flex  items-center gap-2 ">
+                       <div key={serial.serial} onClick={()=>removeSerial(serial.serial)} className=" flex  items-center gap-2 ">
                         <div className="relative text-xs rounded-md bg-white hover:bg-slate-100 shadow-sm shadow-slate-100">
                         <p className="text-[9px] px-1 py-1 ">{serial.serial}</p>
                         <CircleX color={`${serial.status === 'available' ? 'green' : 'red'}`} size={12} className="absolute -top-1 left-0 cursor-pointer opacity-75"/>
