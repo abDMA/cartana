@@ -73,7 +73,7 @@ const AdminPanel = ({userID,balance}) => {
             {tabs.map((tab) => (
               <div
                 key={tab.id}
-                className={`flex items-center justify-between gap-2 py-2 hover:bg-slate-600 sm:w-32 w-8 px-1 rounded-md cursor-pointer ${
+                className={`flex items-center sm:justify-between gap-2 justify-center py-2 hover:bg-slate-600 sm:w-32 w-8 px-1 rounded-md cursor-pointer ${
                   activeTab === tab.id ? "bg-slate-600" : ""
                 }`}
                 onClick={() => setActiveTab(tab.id)}
