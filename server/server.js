@@ -1,6 +1,5 @@
 import express from "express";
 import giftCardRoute from './routes/giftCard.router.js'
-import paymentRoute from "./routes/payment.route.js"
 import authRoute from './routes/auth.route.js'
 import adminRoute from './routes/admin.route.js'
 import paytabsRoute from './routes/paytabs.route.js'
@@ -20,7 +19,6 @@ app.get('/')
 app.use(cookieParser())
 app.use(express.json())
 app.use('/api/giftCard',giftCardRoute)
-app.use('/api/payment',paymentRoute)
 app.use('/api/auth',authRoute)
 app.use('/api/admin',adminRoute)
 app.use('/api/paytabs',paytabsRoute)
