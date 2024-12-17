@@ -185,7 +185,7 @@ const selectedImgPicker = (e)=>{
                         </div>)}
                       
           </div>
-        <textarea value={cardOverView} style={{resize:'none'}} onChange={(e) => setCardOverView(e.target.value)} maxLength={400} className="text-black text-sm focus:ring-teal-400 focus:ring-2 outline-none border-none duration-100 transition-transform font-light mx-12 my-2 p-2 h-[100px] bg-white rounded-md" placeholder="وصف البطاقة">
+        <textarea value={cardOverView} style={{resize:'none'}} onChange={(e) => setCardOverView(e.target.value)} className="text-black text-sm focus:ring-teal-400 focus:ring-2 outline-none border-none duration-100 transition-transform font-light mx-12 my-2 p-2 h-[100px] bg-white rounded-md" placeholder="وصف البطاقة">
         </textarea>
            <div className="flex items-center gap-2  mx-12 my-3">
                       <p className="text-xs font-normal text-white">إختر صورة للبطاقة </p>
