@@ -41,7 +41,7 @@ const buyCard =[{
     if (!isAuthenticated) navigate('/login')
     setIsLoading(true)
     try {
-     await handlePaytab(buyCard)
+      await handlePaytab(buyCard)
       setIsLoading(false)
     } catch (error) {
       console.log('something happen',error);
@@ -66,25 +66,25 @@ const buyCard =[{
        card?.giftCard?.length <= 0 ? <p className="mx-6">لا يوجد بطاقات متوفرة</p> : error ? <p className="text-red-600 text-xs">{error}</p> : 
       (<div className=" flex items-center gap-7 flex-col">
       <div className="w-full flex items-end gap-3 ">
-        <div>
+        <div className="flex-1">
         <h1 className="text-xl sm:text-2xl font-bold py-5">{card.cardName}
           </h1>
-          <LazyImage radius={'10px'} src={card.cardImg} alt={card.cardName}/>
+          <img radius={'10px'} src={card.cardImg} alt={card.cardName}/>
         </div>
-        <div className="flex flex-col items-end gap-2 w-64">
+        <div className="flex-1 flex flex-col items-end gap-2 w-64">
         <div className="w-full flex items-center xs:justify-between xss:flex-col xs:flex-row  ">
           <div className="flex items-center">
-          <button onClick={()=>setCounter((counter)=>counter -1)} disabled={counter<=1} className={`${counter ==1 ? 'border-gray-400':'border-orange-400  hover:border-orange-400 active:border-orange-500'} w-10 h-10 flex justify-center items-center  border-2 rounded-xl text-gray-500 text-2xl `} >-</button> 
+          <button onClick={()=>setCounter((counter)=>counter -1)} disabled={counter<=1} className={`${counter ==1 ? 'border-gray-400':'border-orange-400  hover:border-orange-400 active:border-orange-500'} sm:w-10 sm:h-10 w-8 h-8 flex justify-center items-center  border-2 sm:rounded-xl rounded-lg text-gray-500 text-2xl `} >-</button> 
           <p className="x:mx-3 mx-1">{counter}</p>
             <button  onClick={()=>{
               if (stopInc.length <= counter) {
                 toast.error('لا يمكنك الاضافة لان لا يوجد الكمية المتوفرة') 
               return
               }
-              setCounter((quantity)=>quantity +1)}}  className='w-10 h-10 flex justify-center items-center border-orange-500 border-2 rounded-xl text-black text-2xl hover:border-orange-400 active:border-orange-500'>+</button>
+              setCounter((quantity)=>quantity +1)}}  className='sm:w-10 sm:h-10 w-8 h-8 flex justify-center items-center border-orange-500 border-2 sm:rounded-xl rounded-lg text-black text-2xl hover:border-orange-400 active:border-orange-500'>+</button>
 
           </div>
-          <p className="text-xl font-semibold">{card.price} $</p>
+          <p className="sm:text-xl text-lg font-semibold">{card.price} $</p>
         </div>
         <Button disabled={isloading || card.availibilty === "غير متوفر"} onClick={handleCheck} className="w-full flex items-center justify-center bg-[#0D94CF] text-white py-2 rounded-md
          hover:bg-[#0D94CF]/80 active:bg-[#0D94CF]">
@@ -96,7 +96,7 @@ const buyCard =[{
        </div>
        <div className="w-full my-20">
         <h1 className="text-2xl font-bold">لمــحة عن هــذه البــطاقة</h1>
-        <p className="text-base my-10">{card.cardOverView}</p>
+        <p className="sm:text-xl text-base my-10">{card.cardOverView}</p>
        </div>
        <div className="w-full my-6">
         <h1 className="text-xl my-2 font-bold">ربما يعجبك إيضا</h1>
