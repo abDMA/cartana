@@ -114,7 +114,7 @@ try {
 
 const formattSerial =serialNumber.map(serial =>({
 	serial,
-	staus:'available'
+	status:'available'
 }))
 
 	let cloudinaryResponse
@@ -172,9 +172,9 @@ try {
 		const publicId = card.cardImg.split('/').pop().split('.')[0]
 		await cloudinary.uploader.destroy(publicId)
 	}
-	const formattSerial =serialNumber.map(serial =>({
+	const formattSerial = serialNumber.map(serial =>({
 		serial,
-		staus:'available'
+		status:'available'
 	}))
 	let cloudinaryResponse
 if(cardImg){
@@ -183,7 +183,7 @@ if(cardImg){
     card.cardName = cardName?cardName:card.cardName
     card.cardOverView = cardOverView ? cardOverView:card.cardOverView
     card.cardImg = cardImg?(cloudinaryResponse?.secure_url && cloudinaryResponse.secure_url):card.cardImg
-	card.serialNumber = formattSerial?formattSerial:card.serialNumber
+	card.serialNumber = serialNumber.length>0?formattSerial:card.serialNumber
     card.price = price?price:card.price
     card.cardType = cardType? cardType:card.cardType
     card.cardGenre = cardGenre? cardGenre:card.cardGenre
