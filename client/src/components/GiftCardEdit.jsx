@@ -1,14 +1,5 @@
 import { Button } from "@/components/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -41,9 +32,10 @@ const [stock, setStock] = useState('')
 const [category, setCategory] = useState('')
 const [availibilty, setAvailibilty] = useState('')
 const [errorCard, setErrorCard] = useState(false)
+const [isIncludes, setIsIncludes] = useState(false)
 const {editGiftCard,loading,error,checkSerialNumber,ValidSerial,checking}=useGiftCards()
   const serial = giftCard[0]?.serialNumber.map((serial)=>serial) || [""]
-  const zian = allSerials?.map((num) => num.serial)
+  const zian = allSerials?.map((num) => num.serial) || []
 useEffect(() => {
   setAllSerials(serial)
 }, [giftCard])
@@ -56,15 +48,17 @@ const generateSerialNumber = (length) => {
 }
 
 useEffect(() => {
-    if (serialNumber.length >= 10) {
-        try {
-             checkSerialNumber(serialNumber) 
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
-}, [])
+ try {
+    checkSerialNumber(serialNumber)
 
+ } catch (error) {
+    console.log(error.message);  
+ }
+  
+}, [serialNumber])
+useEffect(() => {
+    setIsIncludes(allSerials.map(serial=>serial.serial).includes(serialNumber))
+}, [allSerials,serialNumber])
 
  const handleValue = (value)=>{
 setCardType(value?value :giftCard[0].cardType)
@@ -99,7 +93,7 @@ const selectedImgPicker = (e)=>{
     setPrice('')
     setCardImg('')
     setCardOverView
-    setAllSerials('')
+    setAllSerials([])
     setSendedSerials([])
     setCardType('')
     setCardGenre('')
@@ -136,19 +130,14 @@ useEffect(() => {
 
 
   return (
-    <Dialog   >
-      <DialogTrigger dir='rtl' className='hover:bg-slate-100 w-full text-left px-2 py-1'>
-        <p className="text-sm">تعديل البطاقة </p>
-       
-     </DialogTrigger>
-      <DialogContent onCloseAutoFocus={(e)=>e.preventDefault()} className="sm:max-w-3xl overflow-y-scroll h-[90%]">
-        <DialogHeader>
-          <DialogTitle>تعديل البطاقة    
-          </DialogTitle>
-          <DialogDescription>
+    <div dir="rtl"   >
+      <div
+className="sm:max-w-3xl bg-white  h-[90%] px-6 py-6">
+        <div>
+          <div>
           قم بتعديل البطاقة  هنا. انقر فوق إضافة عند الانتهاء.
-          </DialogDescription>
-        </DialogHeader>
+          </div>
+        </div>
         <div dir="rtl" className="flex  flex-col  py-4 bg-slate-400 rounded-md">
         <input type="file" hidden ref={filePickerRef} onChange={selectedImgPicker} />
        <GiftCardInput value={cardName} title={'إسم البطاقة'}  onChange={(e) => setcardName(e.target.value)} placeholder={`${giftCard[0]?.cardName ? giftCard[0]?.cardName :"اسم البطاقة كاملا"}`}  type="text"/>
@@ -158,19 +147,21 @@ useEffect(() => {
         <div className="mx-12 text-xs flex items-center gap-2">
     <p>رقم البطاقة</p>
     
-<input value={serialNumber} onChange={(e) => setSerialNumber(e.target.value)}  type="text" placeholder={"الرقم التسلسلي للبطاقة"} className={`uppercase placeholder:text-black placeholder:text-[12px] w-[75%] px-4 py-2  my-2 focus:ring-teal-400 focus:ring-2 outline-none border-none duration-100 transition-transform inputBg rounded-md text-black text-[12px]"`}   />
+<input value={serialNumber} onChange={(e) => setSerialNumber(e.target.value)}  type="text" placeholder={"الرقم التسلسلي للبطاقة"} className={`placeholder:text-black placeholder:text-[12px] w-[75%] px-4 py-2  my-2 focus:ring-teal-400 focus:ring-2 outline-none border-none duration-100 transition-transform inputBg rounded-md text-black text-[12px]"`}   />
 
 </div>
                <div className="absolute top-4 left-14">
-                    {(serialNumber?.length >= 10 && checking)?<LoaderIcon  color="black" size={18} className="animate-spin"/> : (ValidSerial || error) ? <CircleX color="red" size={18}/> : (serialNumber?.length >= 10 && (ValidSerial === false || ValidSerial === null)) ?(
-                      <><CircleCheck color="green" size={18}/>
-                     <div onClick={handleAddSerial} className="absolute top-0 -left-8 cursor-pointer">
+                    {(serialNumber?.length >= 2 && checking)?<LoaderIcon  color="black" size={18} className="animate-spin"/> : (ValidSerial || error ||isIncludes) ? <CircleX color="red" size={18}/> : (serialNumber?.length >= 10 && (ValidSerial === false || ValidSerial === null)) ?(
+                      <>
+                      <CircleCheck color="green" size={18}/>
+                     
+                     <div onClick={handleAddSerial} 
+                     className="absolute top-0 -left-8 cursor-pointer">
                        <CirclePlus  size={18}/>
- 
-                     </div></>
+                     </div>
+                     </>
                     ) :
-                      <Shuffle onClick={()=>setSerialNumber(generateSerialNumber(10))}  color="red" size={18}/>
-                
+                     <Shuffle onClick={()=>setSerialNumber(generateSerialNumber(10))}  color="red" size={18}/>
                     }
                     </div>
                 </div>
@@ -178,6 +169,8 @@ useEffect(() => {
         <div className="relative my-4 w-[15rem] py-1 h-20 mx-12 flex items-start gap-1 flex-wrap overflow-y-auto ">
           {errorCard &&  <p className="text-xs text-white">عدد الارقام التسلسلية لا يتوافق مع عدد 
             البطاقات المتوفرة حدث رقم المخزون او الارقام التسلسلية</p>}
+            {<p className=" w-full text-xs text-white">عدد الارقام التسلسلية :{allSerials.length}</p>}
+            {<br/>}
             {
                   allSerials?.map((serial) =>
                        <div key={serial.serial} onClick={()=>removeSerial(serial.serial)} className=" flex  items-center gap-2 ">
@@ -190,7 +183,7 @@ useEffect(() => {
                       
                       
           </div>
-        <textarea value={cardOverView} style={{resize:'none'}} onChange={(e) => setCardOverView(e.target.value)}  className="text-black text-sm focus:ring-teal-400 focus:ring-2 outline-none border-none duration-100 transition-transform font-light mx-12 my-2 p-2 h-[100px] bg-white rounded-md" placeholder={`${giftCard[0]?.cardOverView ? giftCard[0]?.cardOverView :"وصف البطاقة"}`}>
+        <textarea value={cardOverView} style={{resize:'none'}} onChange={(e) => setCardOverView(e.target.value)} maxLength={400} className="text-black text-sm focus:ring-teal-400 focus:ring-2 outline-none border-none duration-100 transition-transform font-light mx-12 my-2 p-2 h-[100px] bg-white rounded-md" placeholder={`${giftCard[0]?.cardOverView ? giftCard[0]?.cardOverView :"وصف البطاقة"}`}>
         </textarea>
            <div className="flex items-center gap-2  mx-12 my-3">
                       <p className="text-xs font-normal text-white">إختر صورة للبطاقة </p>
@@ -263,11 +256,11 @@ useEffect(() => {
     </Select>
         </div>
     
-        <DialogFooter>
-          <Button disabled={loading || error || (!giftCard[0]?.cardOverView && !cardOverView)} onClick={handleCreateUser}>{loading ? 'جارٍ تعديل البطاقة ':" تعديل بطاقة جدبدة  "}  </Button> <br />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <div dir="rtl" className="px-2 py-2">
+          <Button disabled={loading || error || (!giftCard[0]?.cardOverView && !cardOverView) || allSerials.length !==Number(stock ? stock :giftCard[0]?.stock)} onClick={handleCreateUser}>{loading ? 'جارٍ تعديل البطاقة ':" تعديل بطاقة جدبدة  "}  </Button> <br />
+        </div>
+      </div>
+    </div>
   )
 }
 export default GiftCardEdit
