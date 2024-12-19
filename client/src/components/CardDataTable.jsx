@@ -33,7 +33,8 @@ import GiftCardEdit from "./GiftCardEdit"
   
   
   export function DataTableDemo({giftCards,card}) {
-  
+  const [clicked, setClicked] = useState(false)
+  const [id, setId] = useState('second')
       const data = giftCards
         
   
@@ -115,7 +116,11 @@ import GiftCardEdit from "./GiftCardEdit"
                 إنسخ معرف المستخدم
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-                <GiftCardEdit giftCards={card}  id={payment._id} />
+              <DropdownMenuItem>
+                  <div onClick={()=>{setClicked(true)
+                    setId(payment._id)
+                  }}>تعديل البطاقة </div>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={(e)=>e.preventDefault()}> <DeleteGiftCard  id={payment._id} />
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -174,6 +179,16 @@ import GiftCardEdit from "./GiftCardEdit"
     }
     return (
       <div className="lg:w-[52rem] md:w-[36rem] sm:w-[29rem] x:w-[25rem] xs:w-[20rem] xss:w-[16rem]">
+       { clicked && (
+       <>
+       <div className="absolute w-screen h-screen bg-black opacity-30 top-0 right-0 z-10 "/>
+        <div className="overflow-y-auto absolute sm:w-[25rem] w-[20rem] h-[35rem] bg-slate-600  top-[10%] lg:left-[30%] sm:left-[20%] left-[5%] xss:left-1 z-50 rounded-lg shadow-2xl">
+           <div onClick={()=>setClicked(false)} className={`${clicked ? 'absolute' :'hidden'} top-3 left-3 bg-black rounded-full w-5 h-5 z-10 flex items-center justify-center active:bg-red-500 hover:bg-red-300 cursor-pointer`}>
+              <span className='text-white font-bold text-xs'>X</span>
+              </div>
+              <GiftCardEdit giftCards={card}  id={id} />
+              </div></>
+       )}
         <div className="flex items-center py-4 px-1 gap-2">
           <Input
             placeholder="فلترة الأسماء....."
