@@ -107,9 +107,12 @@ const useGiftCards = create((set) => ({
         try {
             await axios.patch(`giftCard/${id}`,{cardName,price,cardOverView,cardImg,serialNumber,cardType,cardGenre,stock,category,availibilty})
             toast.success('تم تعديل بطاقتك بنجاح')
+            set({loading:false})
         } catch (error) {
             set({error:error.response.data.message})
             console.log('err in check creating card',error);
+        }finally{
+            set({loading:false})
         }
       },
       getRelatedCard:async (id)=>{
