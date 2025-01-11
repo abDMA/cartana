@@ -1,46 +1,7 @@
 import { ArrowRight, CheckCircle, HandHeart } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import axios from "../lib/axios";
 import Confetti from "react-confetti";
-const PurchaseSuccessPage = () => {
-	const [isProcessing, setIsProcessing] = useState(true);
-	const [error, setError] = useState(null);
-	console.log("title",document.title)
-
-	if (document.title.includes('Cannot POST')) {
-		window.location.href = window.location.href.split('?')[0]
-	}
-	
-	useEffect(() => {
-		const handleCheckoutSuccess = async (sessionId) => {
-			try {
-				await axios.post('paytabs/checkout-success', {
-					sessionId,
-				});
-				localStorage.removeItem("cartItems");
-				localStorage.removeItem("trace");
-			} catch (error) {
-				console.log(error.message);
-			} finally {
-				setIsProcessing(false);
-			}
-		};
-
-		const sessionId = JSON.parse(localStorage.getItem("trace")) || [];
-		if (sessionId) {
-			handleCheckoutSuccess(sessionId);
-		} else {
-			setIsProcessing(false);
-			setError("No session ID found in the URL");
-		}
-	}, []);
-
-	if (isProcessing) return "Processing...";
-
-	if (error) return `Error: ${error}`;
-
+const PurchaseSuccessPage = () => 
 	return (
 		<div className='h-screen flex items-center justify-center px-4'>
 			<Confetti
