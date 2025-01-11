@@ -4,6 +4,7 @@ import authRoute from './routes/auth.route.js'
 import adminRoute from './routes/admin.route.js'
 import paytabsRoute from './routes/paytabs.route.js'
 import cookieParser from "cookie-parser"
+import paypalRoute from './routes/paypal.route.js'
 import { connectDB } from "./lib/db.js";
 const app = express();
 import dotenv from "dotenv";
@@ -22,10 +23,8 @@ app.use('/api/giftCard',giftCardRoute)
 app.use('/api/auth',authRoute)
 app.use('/api/admin',adminRoute)
 app.use('/api/paytabs',paytabsRoute)
-app.post('/purchase-success',(req,res)=>{
-	console.log(req.body);
-	res.redirect('/purchase-success')
-})
+app.use('/api/paypal',paypalRoute)
+
 
 
 
