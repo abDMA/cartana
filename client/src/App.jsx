@@ -30,9 +30,6 @@ const ProtectedAdmin = ({children})=>{
 
 }
 
-
-
-
 const App =()=> {
   const {checkAuth,isCheckingAuth,user,isAuthenticated,role} = useAuthStore()
   useEffect(()=>{
