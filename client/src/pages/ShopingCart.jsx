@@ -25,23 +25,12 @@ setData(card)
 },[])
 const [counter, setCounter] = useState(data?.quantity || 1)
 const total= localCart?.reduce((sum, item) => sum + item.price * item.quantity, 0)
-const handleCheck =async () => {
-  if (!isAuthenticated) navigate('/login')
-  setLoading(true)
-  try {
-    await handlePaytab(localCart)
-    setLoading(false)
-  } catch (error) {
-    console.log(error.message);
-    
-    toast.error('حدث خطأ ما اثناء الدفع');
+const openPopup = () => {
+  if (!isAuthenticated) return navigate('/login')
+   const url = '/create-order'
+ const features = 'width=800,height=600,resizable=yes,scrollbars=yes'; window.open(url, '_blank', features);
+ };
 
-
-    
-  }finally{
-    setLoading(false)
-  }
-}
 let storedCart = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) :[]
 useEffect(() => {
   storedCart
@@ -82,7 +71,7 @@ const decreaseQuntity = (cartId)=>{
   setCounter(--data.quantity)
   let cart = storedCart
   const index = cart?.findIndex(item=> item._id === cartId)
-  const stopInc = cart.find(item=> item._id === cartId).serialNumber.filter(item => item.status === 'available')
+  // const stopInc = cart.find(item=> item._id === cartId).serialNumber.filter(item => item.status === 'available')
   
 
   if(index !==-1 && cart[index].quantity >1){
@@ -126,7 +115,7 @@ deleteItem(cartId)
 		<p className='text-xs flex items-center justify-between'>المبلغ الإجمالي ( منتجات{(localCart?.length || 0)}) :
        {(data?.price) && <span className='text-base ml-3'>
       {total} $</span>}</p>
-		<Button disabled={loading || total === 0} onClick={handleCheck}   className={`w-full bg-orange-500 text-white py-2 rounded-lg mt-6 ${data?.quantity ==0 ? 'cursor-not-allowed':'active:bg-orange-300 hover:bg-orange-400' }`}>  {loading ?"جارٍ الدفع":"إدفع الآن"}</Button>
+		<Button disabled={loading || total === 0} onClick={openPopup}   className={`w-full bg-orange-500 text-white py-2 rounded-lg mt-6 ${data?.quantity ==0 ? 'cursor-not-allowed':'active:bg-orange-300 hover:bg-orange-400' }`}>  {loading ?"جارٍ الدفع":"إدفع الآن"}</Button>
 		
 
      </div>
