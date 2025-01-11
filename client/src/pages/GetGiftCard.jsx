@@ -6,7 +6,6 @@ import GiftCard from "../components/GiftCard";
 import { useAuthStore } from "../store/authStore";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { handlePaytab } from "../utils/handlePaytab";
 
 
 
@@ -57,20 +56,7 @@ if (paymentWindow && paymentWindow.closed) {
   },500)
  
  };
-  const handleCheck =async () => {
-    if (!isAuthenticated) navigate('/login')
-    setIsLoading(true)
-    try {
-      await handlePaytab(buyCard)
-      setIsLoading(false)
-    } catch (error) {
-      console.log('something happen',error);
->>>>>>> adfa505e387f0afc88526a790d4ba29634c1b8ae
-      
-  //   }finally{
-  //     setIsLoading(false)
-  //   }
-  // }
+
   if ( card.cardType ==='VipCard' &&(!user || role ==='regular') ) {
     return (
       <div className="flex items-center justify-center h-screen">لا توجد هــذه البــطاقة</div>
