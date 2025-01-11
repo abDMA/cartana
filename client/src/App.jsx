@@ -12,6 +12,7 @@ import ProductsSrvices from "./pages/ProductsSrvices";
 import Policies from "./pages/Policies";
 import Contact from "./pages/Contact";
 import VipPanel from "./pages/VipPanel";
+import Paypal from "./pages/Paypal";
 const RedirectToHome = ({children})=>{
   const {isAuthenticated,user}=useAuthStore()
   if (isAuthenticated && user.isVerified) {
@@ -64,6 +65,7 @@ const App =()=> {
       <Route path="/giftCard/:id" element={<GetGiftCard/>}/>
       <Route path="/cart" element={<ShopingCart/>}/>
       <Route path="/purchase-success" element={<PurchaseSuccessPage/>}/>
+      <Route path="/create-order" element={<Paypal/>}/>
       <Route path="/purchase-cancel" element={<PurchaseCancelPage/>}/>
       <Route path="/why-choose-us" element={<AllWebsiteProperty Icon={ClipboardList} title={"? Why Choose Marveleza"} description={<Choose/>}/>}/>
       <Route path="/about-us" element={ <AllWebsiteProperty Icon={LayoutPanelTop} title={"About Marveleza"} description={<About/>}/>}/>
