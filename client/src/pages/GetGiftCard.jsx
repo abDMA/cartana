@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import useGiftCards from "../store/useGiftCards";
-import LazyImage from "../components/LazyImage";
 import {NavBar,Footer} from './index'
 import GiftCard from "../components/GiftCard";
 import { useAuthStore } from "../store/authStore";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { handlePaytab } from "../utils/handlePaytab";
+
+
+
+
  
 
+
 const GetGiftCard = () => {
+  
     const [counter, setCounter] = useState(1)
     const [isloading, setIsLoading] = useState(false)  
-    const navigate = useNavigate()
     const {isAuthenticated,role,user} = useAuthStore()
 
  
@@ -21,6 +25,7 @@ const {getCard,card,loading,error,getRelatedCard,relatedCard} = useGiftCards()
 const stopInc = card?.serialNumber?.filter(serial => serial.status === 'available')
 
 const { id } = useParams();
+const navigate = useNavigate()
 useEffect(() => {
   getCard(id)
   getRelatedCard(id)
@@ -37,6 +42,21 @@ const buyCard =[{
   cardImg:card?.cardImg,
   quantity:counter
 }]
+const openPopup = () => {
+  if (!isAuthenticated) return navigate('/login')
+    localStorage.setItem("cartItem",JSON.stringify(buyCard),
+  {expires:1})
+   const url = '/create-order'
+ const features = 'width=800,height=600,resizable=yes,scrollbars=yes';
+  const paymentWindow = window.open(url, '_blank', features);
+  const interval = setInterval(()=>{
+if (paymentWindow && paymentWindow.closed) {
+  clearInterval(interval)
+  localStorage.removeItem("cartItem");
+}
+  },500)
+ 
+ };
   const handleCheck =async () => {
     if (!isAuthenticated) navigate('/login')
     setIsLoading(true)
@@ -45,11 +65,12 @@ const buyCard =[{
       setIsLoading(false)
     } catch (error) {
       console.log('something happen',error);
+>>>>>>> adfa505e387f0afc88526a790d4ba29634c1b8ae
       
-    }finally{
-      setIsLoading(false)
-    }
-  }
+  //   }finally{
+  //     setIsLoading(false)
+  //   }
+  // }
   if ( card.cardType ==='VipCard' &&(!user || role ==='regular') ) {
     return (
       <div className="flex items-center justify-center h-screen">لا توجد هــذه البــطاقة</div>
@@ -86,12 +107,13 @@ const buyCard =[{
           </div>
           <p className="sm:text-xl text-lg font-semibold">{card.price} $</p>
         </div>
-        <Button disabled={isloading || card.availibilty === "غير متوفر"} onClick={handleCheck} className="w-full flex items-center justify-center bg-[#0D94CF] text-white py-2 rounded-md
+        <Button disabled={isloading || card.availibilty === "غير متوفر"} onClick={openPopup} className="w-full flex items-center justify-center bg-[#0D94CF] text-white py-2 rounded-md
          hover:bg-[#0D94CF]/80 active:bg-[#0D94CF]">
         {
           isloading ? 'جارٍ الدفع ...' : 'اشتري الان'
         }
         </Button>
+    
         </div>
        </div>
        <div className="w-full my-20">
